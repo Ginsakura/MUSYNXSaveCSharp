@@ -361,3 +361,28 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+/__pycache__
+/.vs
+/musync
+/saveFile
+/logs
+/SavDecode
+/MusyncSaveDecode
+
+LXGW.ttf
+SaveDataInfo.json
+
+*.bat
+*.bin
+!Resources.bin
+*.db
+*.dll
+*.exe
+*.log
+*.psd
+*.sav
+*.sfp
+*.sql
+*.tmp
+*.txt

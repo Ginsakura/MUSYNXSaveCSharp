@@ -8,7 +8,7 @@ internal class StaticObject
     /// <summary>
     /// 游戏文件名
     /// </summary>
-    public const string ProcessName = "MUSYNC.exe";
+    public const string ProcessName = "MUSYNX.exe";
 
     /// <summary>
     /// Json序列化设置

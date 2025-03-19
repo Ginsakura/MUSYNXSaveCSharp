@@ -67,7 +67,38 @@ public partial class ViewModel : INotifyPropertyChanged
     {
     }
 
-    public String _SavePath = "Input SaveFile or AnalyzeFile Path (savedata.sav)";
+    private String _SavePath = "Input SaveFile or AnalyzeFile Path (savedata.sav)";
+    /// <summary>
+    /// 存档路径字符串
+    /// </summary>
     public String SavePath
-    { get => _SavePath; set { _SavePath = value; OnPropertyChanged(_SavePath); } }
+    { get => _SavePath; set { _SavePath = value; OnPropertyChanged(nameof(_SavePath)); } }
+
+    private Int32 _MapCount = 0;
+    /// <summary>
+    /// 显示的谱面数量
+    /// </summary>
+    public Int32 MapCount
+    { get => _MapCount; set { _MapCount = value; OnPropertyChanged(nameof(_MapCount)); } }
+
+    private Double _SYNC_Rate = 0.0D;
+    /// <summary>
+    /// 综合同步率
+    /// </summary>
+    public Double SYNC_Rate
+    { get => _SYNC_Rate; set { _SYNC_Rate = value; OnPropertyChanged(nameof(_SYNC_Rate)); } }
+
+    private String _ResourceVersion = "20250319";
+    /// <summary>
+    /// 资源文件版本
+    /// </summary>
+    public Int32 ResourceVersion
+    {
+        get => Int32.Parse(_ResourceVersion);
+        set
+        {
+            _ResourceVersion = value.ToString();
+            OnPropertyChanged(nameof(_ResourceVersion));
+        }
+    }
 }

@@ -10,13 +10,14 @@
     Height="670"
     d:DataContext="{d:DesignInstance Type=local:ViewModel}"
     mc:Ignorable="d">
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="18*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
+        <!--  Decoder  -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -45,6 +46,75 @@
                 Click="OpenFileSelect_Click"
                 Content="选择文件"
                 FontSize="18" />
+        </Grid>
+        <!--  Selector  -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Margin="10,0,0,0"
+                    Content="显示计数: "
+                    FontSize="18" />
+                <Label
+                    Grid.Row="0"
+                    Margin="0,0,10,0"
+                    HorizontalContentAlignment="Right"
+                    d:Content="1637"
+                    Content="{Binding MapCount}"
+                    FontSize="18" />
+                <Label
+                    x:Name="IsGameRunningLabel"
+                    Grid.Row="1"
+                    Margin="30,3"
+                    Padding="1"
+                    HorizontalContentAlignment="Center"
+                    d:Content="游戏未启动"
+                    Background="#FF8080"
+                    FontSize="18"
+                    MouseLeftButtonUp="IsGameRunningLabel_MouseLeftButtonUp" />
+            </Grid>
+        </Grid>
+        <!--  Viewer  -->
+        <Grid Grid.Row="2">
+            <ListView
+                x:Name="MapShowList"
+                FontSize="18"
+                ItemsSource="{d:SampleData ItemCount=10}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn DisplayMemberBinding="{Binding MapId}" Header="MapId" />
+                            <GridViewColumn DisplayMemberBinding="{Binding SongName}" Header="SongName" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Keys}" Header="Keys" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Difficulty}" Header="Difficulty" />
+                            <GridViewColumn DisplayMemberBinding="{Binding DifficultyNumber}" Header="Level" />
+                            <GridViewColumn DisplayMemberBinding="{Binding SYNCRate}" Header="SYNCRate" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Rank}" Header="Rank" />
+                            <GridViewColumn DisplayMemberBinding="{Binding UploadScore}" Header="UploadScore" />
+                            <GridViewColumn DisplayMemberBinding="{Binding PlayCount}" Header="Count" />
+                            <GridViewColumn DisplayMemberBinding="{Binding State}" Header="State" />
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <!--  Status Bar  -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
         </Grid>
     </Grid>
 </Window>

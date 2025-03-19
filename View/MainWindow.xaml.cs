@@ -42,4 +42,9 @@ public partial class MainWindow : Window
             return;
         }
     }
+
+    private void IsGameRunningLabel_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        //通过Steam启动游戏
+    }
 }
