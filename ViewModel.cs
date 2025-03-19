@@ -1,9 +1,12 @@
-﻿using System;
+﻿using MUSYNCSaveDecode.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,8 +31,9 @@ public partial class ViewModel : INotifyPropertyChanged
     /// 属性更改通知方法
     /// </summary>
     /// <param name="propertyName">发生变化的属性名</param>
-    private void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
+        if (propertyName == null) { return; }
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
@@ -65,14 +69,30 @@ public partial class ViewModel : INotifyPropertyChanged
     /// </summary>
     private ViewModel()
     {
+        // 获取当前程序集的版本号
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        _Version = assembly.GetName().Version ?? new Version(0, 0, 0);
     }
 
-    private String _SavePath = "Input SaveFile or AnalyzeFile Path (savedata.sav)";
+    private readonly Version _Version;
+    /// <summary>
+    /// 版本号
+    /// </summary>
+    public String Version => $"{_Version.Major}.{_Version.Minor} build {_Version.Build}";
+
+    private String _SavePath = StaticResource.SavePath;
     /// <summary>
     /// 存档路径字符串
     /// </summary>
     public String SavePath
     { get => _SavePath; set { _SavePath = value; OnPropertyChanged(nameof(_SavePath)); } }
+
+    private String _RepoTip = StaticResource.RepoTip;
+    /// <summary>
+    /// 仓库提示
+    /// </summary>
+    public String RepoTip
+    { get => _RepoTip; set { _RepoTip = value; OnPropertyChanged(nameof(_RepoTip)); } }
 
     private Int32 _MapCount = 0;
     /// <summary>
@@ -87,18 +107,15 @@ public partial class ViewModel : INotifyPropertyChanged
     /// </summary>
     public Double SYNC_Rate
     { get => _SYNC_Rate; set { _SYNC_Rate = value; OnPropertyChanged(nameof(_SYNC_Rate)); } }
+    /// <summary>
+    /// 格式化的综合同步率
+    /// </summary>
+    public string SYNC_RateFormatted => $"{_SYNC_Rate * 100:F6}%";
 
-    private String _ResourceVersion = "20250319";
+    private Int32 _ResourceVersion = 20250319;
     /// <summary>
     /// 资源文件版本
     /// </summary>
     public Int32 ResourceVersion
-    {
-        get => Int32.Parse(_ResourceVersion);
-        set
-        {
-            _ResourceVersion = value.ToString();
-            OnPropertyChanged(nameof(_ResourceVersion));
-        }
-    }
+    { get => _ResourceVersion; set { _ResourceVersion = value; OnPropertyChanged(nameof(_ResourceVersion)); } }
 }

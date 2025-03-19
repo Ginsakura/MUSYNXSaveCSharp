@@ -7,13 +7,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="同步音律喵赛克Steam端本地存档分析"
     Width="1000"
-    Height="670"
+    Height="700"
+    MinWidth="1000"
+    MinHeight="600"
+    MaxWidth="1000"
     d:DataContext="{d:DesignInstance Type=local:ViewModel}"
     mc:Ignorable="d">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="3*" />
             <RowDefinition Height="18*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
@@ -50,47 +53,263 @@
         <!--  Selector  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.75*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1.5*" />
+                <ColumnDefinition Width="1.25*" />
+                <ColumnDefinition Width="1.4*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
+            <!--  Count  -->
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                <Border
+                    Grid.Row="0"
+                    Margin="5,5"
+                    Padding="0"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    CornerRadius="2,2,2,2" />
                 <Label
                     Grid.Row="0"
-                    Margin="10,0,0,0"
+                    Margin="7,0"
+                    Padding="0"
+                    VerticalContentAlignment="Center"
                     Content="显示计数: "
                     FontSize="18" />
                 <Label
                     Grid.Row="0"
-                    Margin="0,0,10,0"
+                    Margin="5,0"
                     HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
                     d:Content="1637"
                     Content="{Binding MapCount}"
                     FontSize="18" />
                 <Label
                     x:Name="IsGameRunningLabel"
                     Grid.Row="1"
-                    Margin="30,3"
+                    Margin="15,5"
                     Padding="1"
                     HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
                     d:Content="游戏未启动"
                     Background="#FF8080"
                     FontSize="18"
                     MouseLeftButtonUp="IsGameRunningLabel_MouseLeftButtonUp" />
             </Grid>
+            <!--  Selector  -->
+            <GroupBox
+                Grid.Column="1"
+                BorderBrush="Black"
+                FontSize="10"
+                Header="筛选控件">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        x:Name="PlayedBtn"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="2"
+                        Click="PlayedBtn_Click"
+                        Content="Played"
+                        FontSize="18" />
+                    <Button
+                        x:Name="UnplayBtn"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="2"
+                        Click="UnPlayBtn_Click"
+                        Content="UnPlay"
+                        FontSize="18" />
+                    <Button
+                        x:Name="FavoBtn"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="2"
+                        Click="FavoBtn_Click"
+                        Content="Favo"
+                        FontSize="18" />
+                    <Button
+                        x:Name="RankExBtn"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="2"
+                        Click="RankExBtn_Click"
+                        Content="RankEx"
+                        FontSize="18" />
+                    <Button
+                        x:Name="BlackExBtn"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Margin="2"
+                        Click="BlackExBtn_Click"
+                        Content="BlackEx"
+                        FontSize="18" />
+                    <Button
+                        x:Name="RedExBtn"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="2"
+                        Click="RedEx_Click"
+                        Content="RedEx"
+                        FontSize="18" />
+                    <Button
+                        x:Name="RankSBtn"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        Margin="2"
+                        Click="RankSBtn_Click"
+                        Content="RankS"
+                        FontSize="18" />
+                    <Button
+                        x:Name="RankABtn"
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="2"
+                        Click="RankABtn_Click"
+                        Content="RankA"
+                        FontSize="18" />
+                    <Button
+                        x:Name="RankBBtn"
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        Margin="2"
+                        Click="RankBBtn_Click"
+                        Content="RankB"
+                        FontSize="18" />
+                    <Button
+                        x:Name="RankCBtn"
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Margin="2"
+                        Click="RankCBtn_Click"
+                        Content="RankC"
+                        FontSize="18" />
+                </Grid>
+            </GroupBox>
+            <!--  Extra Selector  -->
+            <GroupBox
+                Grid.Column="2"
+                BorderBrush="Black"
+                FontSize="10"
+                Header="额外筛选">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        x:Name="KeysSelectorBtn"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="2"
+                        Click="KeysSelectorBtn_Click"
+                        Content="Keys"
+                        FontSize="18" />
+                    <Button
+                        x:Name="DiffcutySelectorBtn"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="2"
+                        Click="DiffcutySelectorBtn_Click"
+                        Content="Diffcuty"
+                        FontSize="18" />
+                    <Button
+                        x:Name="SongsSelectorBtn"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Margin="2"
+                        Click="SongsSelectorBtn_Click"
+                        FontSize="18">
+                        <TextBlock
+                            Text="Songs"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </Button>
+                </Grid>
+            </GroupBox>
+            <!--  Tool  -->
+            <Grid Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button
+                    x:Name="AdvancedFeatures"
+                    Grid.Row="0"
+                    Margin="5,5,5,2.5"
+                    Background="#FF5959"
+                    Click="AdvancedFeatures_Click"
+                    Content="Advanced"
+                    FontSize="18" />
+                <Button
+                    Grid.Row="1"
+                    Margin="5,2.5,5,5"
+                    Click="ScorePlot_Click"
+                    Content="ScorePlot"
+                    FontSize="18" />
+            </Grid>
+            <!--  Statistics  -->
+            <Grid Grid.Column="4" ShowGridLines="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="6"
+                    Margin="2,5"
+                    Padding="0"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    CornerRadius="2,2,2,2" />
+                <Label
+                    Grid.Row="0"
+                    Margin="0,5,0,0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="SYNC_Rate"
+                    FontSize="18" />
+                <Label
+                    Grid.Row="1"
+                    Margin="0,0,0,5"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    d:Content="012.345678%"
+                    Content="{Binding SYNC_Rate}"
+                    FontSize="18" />
+            </Grid>
+            <!--  Settings  -->
+            <Grid Grid.Column="5">
+                <Button FontSize="18">
+                    <Image Source="pack://application:,,,/skin/Setting.png" />
+                </Button>
+            </Grid>
         </Grid>
         <!--  Viewer  -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="2">
             <ListView
                 x:Name="MapShowList"
-                FontSize="18"
-                ItemsSource="{d:SampleData ItemCount=10}">
+                d:ItemsSource="{d:SampleData ItemCount=10}"
+                FontSize="18">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
@@ -110,11 +329,59 @@
             </ListView>
         </Grid>
         <!--  Status Bar  -->
-        <Grid>
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.5*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1.5*" />
             </Grid.ColumnDefinitions>
+            <Border
+                Grid.Column="0"
+                Margin="2,0,5,0"
+                Padding="0"
+                BorderBrush="#151515"
+                BorderThickness="1"
+                CornerRadius="2,2,2,2">
+                <Label
+                    Padding="0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    d:Content="0.1 build 1"
+                    Content="{Binding Version}"
+                    FontSize="18" />
+            </Border>
+            <Border
+                Grid.Column="1"
+                Margin="5,0"
+                Padding="0"
+                BorderBrush="#151515"
+                BorderThickness="1"
+                CornerRadius="2,2,2,2" />
+            <Button
+                x:Name="RepoTipBtn"
+                Grid.Column="2"
+                Margin="5,0"
+                d:Content="点击打开GitHub仓库 点个Star吧，秋梨膏"
+                Background="#F5F5F5"
+                Content="{Binding RepoTip}"
+                FontSize="18"
+                Foreground="#4BB1DA" />
+            <Border
+                Grid.Column="3"
+                Margin="5,0,2,0"
+                Padding="0"
+                BorderBrush="#7F7F7F"
+                BorderThickness="1"
+                CornerRadius="2,2,2,2">
+                <Label
+                    Padding="0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="Develop By Ginsakura"
+                    FontSize="18"
+                    Foreground="#4BB1DA" />
+            </Border>
         </Grid>
     </Grid>
 </Window>

@@ -3,12 +3,27 @@ using System.Text.Json;
 
 namespace MUSYNCSaveDecode.Model;
 
-internal class StaticObject
+internal class StaticResource
 {
     /// <summary>
     /// 游戏文件名
     /// </summary>
-    public const string ProcessName = "MUSYNX.exe";
+    public const String ProcessName = "MUSYNX.exe";
+
+    /// <summary>
+    /// 默认存档路径提示
+    /// </summary>
+    public const String SavePath = "Input SaveFile or AnalyzeFile Path (savedata.sav)";
+
+    /// <summary>
+    /// 仓库地址提示
+    /// </summary>
+    public const String RepoTip = "点击打开GitHub仓库 点个Star吧，秋梨膏";
+
+    /// <summary>
+    /// 软件更新提示
+    /// </summary>
+    public const String UpdateTip = "检测到新版本，点击打开GitHub仓库";
 
     /// <summary>
     /// Json序列化设置
@@ -18,7 +33,7 @@ internal class StaticObject
     /// <summary>
     /// Data Dir
     /// </summary>
-    public static readonly string DataDir = Path.Combine(Directory.GetCurrentDirectory(), "musync_data");
+    public static readonly String DataDir = Path.Combine(Directory.GetCurrentDirectory(), "musync_data");
 
     /// <summary>
     /// Config File Path

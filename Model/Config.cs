@@ -105,15 +105,15 @@ public partial class Config
 
     private void LoadConfig()
     {
-        if (!File.Exists(StaticObject.ConfigFilePath))
+        if (!File.Exists(StaticResource.ConfigFilePath))
         {
-            //_logger.LogError($"File \"{StaticObject.ConfigFilePath}\" does not exist.");
+            //_logger.LogError($"File \"{StaticResource.ConfigFilePath}\" does not exist.");
             return;
         }
 
         try
         {
-            using var fileStream = File.OpenRead(StaticObject.ConfigFilePath);
+            using var fileStream = File.OpenRead(StaticResource.ConfigFilePath);
             var config = JsonSerializer.Deserialize<Dictionary<String, object>>(fileStream);
 
             if (config != null)
@@ -144,12 +144,12 @@ public partial class Config
                 }
 
                 LoggerFilter = LogLevelMap[LoggerFilterString];
-                //_logger.LogInformation($"Configuration loaded from \"{StaticObject.ConfigFilePath}\".");
+                //_logger.LogInformation($"Configuration loaded from \"{StaticResource.ConfigFilePath}\".");
             }
         }
         catch (Exception ex)
         {
-            //_logger.LogError(ex, $"Failed to load configuration from \"{StaticObject.ConfigFilePath}\".");
+            //_logger.LogError(ex, $"Failed to load configuration from \"{StaticResource.ConfigFilePath}\".");
         }
     }
 
@@ -177,7 +177,7 @@ public partial class Config
             { "DefaultDiffcute", DefaultDiffcute }
         };
 
-        String directory = Path.GetDirectoryName(StaticObject.ConfigFilePath) ?? Path.Combine(Directory.GetCurrentDirectory(), "musync_data");
+        String directory = Path.GetDirectoryName(StaticResource.ConfigFilePath) ?? Path.Combine(Directory.GetCurrentDirectory(), "musync_data");
         if (!Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
@@ -185,33 +185,33 @@ public partial class Config
 
         try
         {
-            using var fileStream = File.OpenWrite(StaticObject.ConfigFilePath);
-            JsonSerializer.Serialize(fileStream, configData, StaticObject.jsonSerializerOptions);
-            //_logger.LogInformation($"Configuration saved to \"{StaticObject.ConfigFilePath}\".");
+            using var fileStream = File.OpenWrite(StaticResource.ConfigFilePath);
+            JsonSerializer.Serialize(fileStream, configData, StaticResource.jsonSerializerOptions);
+            //_logger.LogInformation($"Configuration saved to \"{StaticResource.ConfigFilePath}\".");
         }
         catch (Exception ex)
         {
-            //_logger.LogError(ex, $"Failed to save configuration to \"{StaticObject.ConfigFilePath}\".");
+            //_logger.LogError(ex, $"Failed to save configuration to \"{StaticResource.ConfigFilePath}\".");
         }
     }
 
     public static void CompressLogFile()
     {
-        if (!Directory.Exists(StaticObject.LogCompressDir))
+        if (!Directory.Exists(StaticResource.LogCompressDir))
         {
-            Directory.CreateDirectory(StaticObject.LogCompressDir);
+            Directory.CreateDirectory(StaticResource.LogCompressDir);
         }
 
-        Int32 nextIndex = Directory.GetFiles(StaticObject.LogCompressDir).Length;
+        Int32 nextIndex = Directory.GetFiles(StaticResource.LogCompressDir).Length;
         String compressLogName = $"log.{nextIndex}.gz";
 
-        if (File.Exists(StaticObject.LogFilePath))
+        if (File.Exists(StaticResource.LogFilePath))
         {
-            using FileStream fIn = File.OpenRead(StaticObject.LogFilePath);
-            using GZipStream fOut = new(File.Create(Path.Combine(StaticObject.LogCompressDir, compressLogName)), CompressionMode.Compress);
+            using FileStream fIn = File.OpenRead(StaticResource.LogFilePath);
+            using GZipStream fOut = new(File.Create(Path.Combine(StaticResource.LogCompressDir, compressLogName)), CompressionMode.Compress);
             fIn.CopyTo(fOut);
 
-            File.Delete(StaticObject.LogFilePath);
+            File.Delete(StaticResource.LogFilePath);
         }
     }
 }
