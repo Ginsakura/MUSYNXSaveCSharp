@@ -25,6 +25,8 @@ internal class StaticResource
     /// </summary>
     public const String UpdateTip = "检测到新版本，点击打开GitHub仓库";
 
+    public const String AssemblyPath = "MUSYNX_Data/Managed/Assembly-CSharp.dll";
+
     /// <summary>
     /// Json序列化设置
     /// </summary>

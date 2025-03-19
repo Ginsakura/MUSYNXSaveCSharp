@@ -48,7 +48,6 @@ public partial class Config
     {
         CompressLogFile();
         // Initialize default values
-        Version = "";
         LoggerFilterString = "DEBUG";
         LoggerFilter = SourceLevels.Information;
         Acc_Sync = false;
@@ -83,7 +82,6 @@ public partial class Config
         }
     }
 
-    public String Version { get; set; }
     public String LoggerFilterString { get; set; }
     public SourceLevels LoggerFilter { get; set; }
     public Boolean Acc_Sync { get; set; }
@@ -122,7 +120,6 @@ public partial class Config
                 {
                     switch (key)
                     {
-                        case "Version": Version = value.ToString() ?? "0.0.0.0"; break;
                         case "LoggerFilterString": LoggerFilterString = value.ToString() ?? "INFO"; break;
                         case "Acc_Sync": Acc_Sync = Convert.ToBoolean(value); break;
                         case "CheckUpdate": CheckUpdate = Convert.ToBoolean(value); break;
@@ -157,7 +154,6 @@ public partial class Config
     {
         var configData = new Dictionary<String, object>
         {
-            { "Version", Version },
             { "LoggerFilter", LoggerFilterString },
             { "Acc_Sync", Acc_Sync },
             { "CheckUpdate", CheckUpdate },

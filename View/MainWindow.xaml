@@ -299,7 +299,7 @@
             </Grid>
             <!--  Settings  -->
             <Grid Grid.Column="5">
-                <Button FontSize="18">
+                <Button Click="SettingBtn_Click" FontSize="18">
                     <Image Source="pack://application:,,,/skin/Setting.png" />
                 </Button>
             </Grid>

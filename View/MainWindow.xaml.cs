@@ -117,4 +117,9 @@ public partial class MainWindow : Window
     private void ScorePlot_Click(object sender, RoutedEventArgs e)
     {
     }
+
+    private void SettingBtn_Click(object sender, RoutedEventArgs e)
+    {
+        new Decode(@"D:\Program Files\steam\steamapps\common\MUSYNX\SavesDir\savedata.sav").Function();
+    }
 }

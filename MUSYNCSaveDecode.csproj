@@ -1,61 +1,71 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <StartupObject>MUSYNCSaveDecode.App</StartupObject>
-    <AssemblyName>MUSYNCSaveDecode</AssemblyName>
-    <RootNamespace>MUSYNCSaveDecode</RootNamespace>
-    <ApplicationIcon>Musync.ico</ApplicationIcon>
-    <PlatformTarget>x86</PlatformTarget>
-    <Authors>Ginsakura</Authors>
-    <Version>0.1.7</Version>
-    <AssemblyVersion>0.1.7</AssemblyVersion>
-    <FileVersion>0.1.7</FileVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<StartupObject>MUSYNCSaveDecode.App</StartupObject>
+		<AssemblyName>MUSYNCSaveDecode</AssemblyName>
+		<RootNamespace>MUSYNCSaveDecode</RootNamespace>
+		<ApplicationIcon>Musync.ico</ApplicationIcon>
+		<PlatformTarget>x86</PlatformTarget>
+		<Authors>Ginsakura</Authors>
+		<Version>0.1.21</Version>
+		<AssemblyVersion>0.1.21</AssemblyVersion>
+		<FileVersion>0.1.21</FileVersion>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <ShouldCreateLogs>True</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <UpdatePackageVersion>True</UpdatePackageVersion>
-    <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-    <PackageVersionSettings>AssemblyVersion.IncrementWithAutoReset.None</PackageVersionSettings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <ShouldCreateLogs>True</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <UpdatePackageVersion>True</UpdatePackageVersion>
-    <PackageVersionSettings>AssemblyVersion.IncrementWithAutoReset.None</PackageVersionSettings>
-    <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<ShouldCreateLogs>True</ShouldCreateLogs>
+		<AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+		<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+		<UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+		<UpdatePackageVersion>True</UpdatePackageVersion>
+		<AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+		<InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+		<PackageVersionSettings>AssemblyVersion.IncrementWithAutoReset.None</PackageVersionSettings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="CSharp Code\Console.cs" />
-    <Compile Remove="CSharp Code\ConsoleInput.cs" />
-    <Compile Remove="CSharp Code\ConsoleWindow.cs" />
-    <Compile Remove="CSharp Code\GloHasConsole.cs" />
-    <Compile Remove="CSharp Code\JudgeGrade.cs" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<ShouldCreateLogs>True</ShouldCreateLogs>
+		<AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+		<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+		<UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+		<UpdatePackageVersion>True</UpdatePackageVersion>
+		<PackageVersionSettings>AssemblyVersion.IncrementWithAutoReset.None</PackageVersionSettings>
+		<AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+		<InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="Musync.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="CSharp Code\Console.cs" />
+		<Compile Remove="CSharp Code\ConsoleInput.cs" />
+		<Compile Remove="CSharp Code\ConsoleWindow.cs" />
+		<Compile Remove="CSharp Code\GloHasConsole.cs" />
+		<Compile Remove="CSharp Code\JudgeGrade.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Musync.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
+		<PackageReference Include="System.Data.SQLite" Version="1.0.119" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="skin\Setting.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 </Project>
