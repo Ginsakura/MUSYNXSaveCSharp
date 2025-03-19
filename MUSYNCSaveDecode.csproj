@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <StartupObject>MUSYNCSaveDecode.App</StartupObject>
+    <AssemblyName>MUSYNCSaveDecode</AssemblyName>
+    <RootNamespace>MUSYNCSaveDecode</RootNamespace>
+    <ApplicationIcon>Musync.ico</ApplicationIcon>
+    <PlatformTarget>x86</PlatformTarget>
+    <Authors>Ginsakura</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Musync.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
+  </ItemGroup>
+
+</Project>
