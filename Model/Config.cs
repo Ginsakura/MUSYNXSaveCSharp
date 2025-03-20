@@ -62,9 +62,7 @@ public partial class Config
         ConsoleFontSize = 36;
         MainExecPath = "";
         ChangeConsoleStyle = true;
-        FramelessWindow = false;
-        TransparentColor = "#FFFFFF";
-        Default4Keys = false;
+        DefaultKeys = false;
         DefaultDiffcute = 0;
 
         LoadConfig();
@@ -96,9 +94,7 @@ public partial class Config
     public Int32 ConsoleFontSize { get; set; }
     public String MainExecPath { get; set; }
     public Boolean ChangeConsoleStyle { get; set; }
-    public Boolean FramelessWindow { get; set; }
-    public String TransparentColor { get; set; }
-    public Boolean Default4Keys { get; set; }
+    public Boolean DefaultKeys { get; set; }
     public Int32 DefaultDiffcute { get; set; }
 
     private void LoadConfig()
@@ -133,9 +129,7 @@ public partial class Config
                         case "ConsoleFontSize": ConsoleFontSize = Convert.ToInt32(value); break;
                         case "MainExecPath": MainExecPath = value.ToString() ?? ""; break;
                         case "ChangeConsoleStyle": ChangeConsoleStyle = Convert.ToBoolean(value); break;
-                        case "FramelessWindow": FramelessWindow = Convert.ToBoolean(value); break;
-                        case "TransparentColor": TransparentColor = value.ToString() ?? "#FFFFFF"; break;
-                        case "Default4Keys": Default4Keys = Convert.ToBoolean(value); break;
+                        case "DefaultKeys": DefaultKeys = Convert.ToBoolean(value); break;
                         case "DefaultDiffcute": DefaultDiffcute = Convert.ToInt32(value); break;
                     }
                 }
@@ -167,9 +161,7 @@ public partial class Config
             { "ConsoleFontSize", ConsoleFontSize },
             { "MainExecPath", MainExecPath },
             { "ChangeConsoleStyle", ChangeConsoleStyle },
-            { "FramelessWindow", FramelessWindow },
-            { "TransparentColor", TransparentColor },
-            { "Default4Keys", Default4Keys },
+            { "DefaultKeys", DefaultKeys },
             { "DefaultDiffcute", DefaultDiffcute }
         };
 

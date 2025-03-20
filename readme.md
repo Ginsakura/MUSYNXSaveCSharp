@@ -1,23 +1,23 @@
 ﻿# 同步音律喵赛克 Steam端 存档解析工具
 MUSYNX Steam Client Savefile Decode & Analyze Tool
 
-Python版本: [MUSYNCSave](https://github.com/Ginsakura/MUSYNCSave)
+Python版本: [MUSYNXSave](https://github.com/Ginsakura/MUSYNXSave)
 
-[down_svg]: https://img.shields.io/github/downloads/ginsakura/MUSYNCSaveCSharp/total?label=All%20Downloads
-[all_release]: https://github.com/Ginsakura/MUSYNCSaveCSharp/releases
-[commit_svg]: https://img.shields.io/github/commit-activity/t/ginsakura/MUSYNCSaveCSharp?label=All%20Commits
-[commit]: https://github.com/Ginsakura/MUSYNCSaveCSharp/commits
-[license_svg]: https://img.shields.io/github/license/ginsakura/MUSYNCSaveCSharp?label=License
+[down_svg]: https://img.shields.io/github/downloads/ginsakura/MUSYNXSaveCSharp/total?label=All%20Downloads
+[all_release]: https://github.com/Ginsakura/MUSYNXSaveCSharp/releases
+[commit_svg]: https://img.shields.io/github/commit-activity/t/ginsakura/MUSYNXSaveCSharp?label=All%20Commits
+[commit]: https://github.com/Ginsakura/MUSYNXSaveCSharp/commits
+[license_svg]: https://img.shields.io/github/license/ginsakura/MUSYNXSaveCSharp?label=License
 [![All releases][down_svg]][all_release]
 [![All commit activity (branch)][commit_svg]][commit]
 [![License][license_svg]](./LICENSE)
 
-[latest_prerelease_svg]: https://img.shields.io/github/v/release/ginsakura/MUSYNCSaveCSharp?display_name=release&label=Latest%20PreRelease&include_prereleases
-[all_tags]: https://github.com/Ginsakura/MUSYNCSaveCSharp/tags
+[latest_prerelease_svg]: https://img.shields.io/github/v/release/ginsakura/MUSYNXSaveCSharp?display_name=release&label=Latest%20PreRelease&include_prereleases
+[all_tags]: https://github.com/Ginsakura/MUSYNXSaveCSharp/tags
 [![Latest tag][latest_prerelease_svg]][all_tags]
 
-[latest_release_svg]: https://img.shields.io/github/v/release/ginsakura/MUSYNCSaveCSharp?display_name=release&label=Latest%20Release
-[release]: https://github.com/Ginsakura/MUSYNCSaveCSharp/releases/latest
+[latest_release_svg]: https://img.shields.io/github/v/release/ginsakura/MUSYNXSaveCSharp?display_name=release&label=Latest%20Release
+[release]: https://github.com/Ginsakura/MUSYNXSaveCSharp/releases/latest
 [![latest release][latest_release_svg]][release]
 
 ## How to use
@@ -59,7 +59,6 @@ Python版本: [MUSYNCSave](https://github.com/Ginsakura/MUSYNCSave)
 
 |            配置项           |     默认值     | 值类型  |                                配置说明                                |
 |-----------------------------|----------------|---------|------------------------------------------------------------------------|
-| `Version`                   | `自动获取`     | string  |  |
 | `LoggerFilter`              | 'INFO'         | string  |  |
 | `Acc_Sync`                  | false          | boolean | 是否启用Acc-Synx图表                                                    |
 | `CheckUpdate`               | false          | boolean | 是否启用自动检查更新                                                    |
@@ -68,13 +67,11 @@ Python版本: [MUSYNCSave](https://github.com/Ginsakura/MUSYNCSave)
 | `DonutChartinHitDelay`      | false          | boolean | 是否在单次游玩统计中显示击打延迟环形图                                  |
 | `DonutChartinAllHitAnalyze` | false          | boolean | 是否在全局统计中显示击打延迟环形图                                      |
 | `NarrowDelayInterval`       | true           | boolean | 是否在单次游玩统计中使用更狭窄的击打区间来计算平均偏移值(Delay)<br>[true=±45ms,false=±90ms]|
+| `ChangeConsoleStyle`        | false          | boolean | 是否启用自定义喵赛克游戏本体控制台窗口样式                              |
 | `ConsoleAlpha`              | 75             | int     | 游戏控制台窗口的不透明度<br>(取值范围[0,100],100为完全不透明,不建议取值在30以下)|
 | `ConsoleFont`               | '霞鹜文楷等宽' | string  | 游戏控制台窗口的字体                                                    |
 | `ConsoleFontSize`           | 36             | int     | 游戏控制台窗口的字号                                                    |
 | `MainExecPath`              | `自动获取`     | string  | 游戏主程序所在的路径                                                    |
-| `ChangeConsoleStyle`        | false          | boolean | 是否启用自定义喵赛克游戏本体控制台窗口样式                              |
-| `FramelessWindow`           | false          | boolean | 是否启用无边框窗口样式(未完成)                                          |
-| `TransparentColor`          | '#FFFFFF'      | string<br>boolean | (仅限新样式)设置透明色<br>设置为false即为关闭透明色           |
 | `DefaultKeys`               | false          | boolean | `高级功能`中默认`键数`参数 (true为4K, false为6K)                        |
 | `DefaultDiffcute`           | 0              | int     | `高级功能`中默认`难度`参数 (0为Easy, 1为Hard, 2为Inferno)               |
 

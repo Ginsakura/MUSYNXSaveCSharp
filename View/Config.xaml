@@ -6,10 +6,396 @@
     xmlns:local="clr-namespace:MUSYNCSaveDecode.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Config"
-    Width="800"
-    Height="450"
+    Width="450"
+    Height="800"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Storyboard x:Key="SwitchChecked">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SwitchBorder" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="10" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="20" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="10" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchBorder" Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static HorizontalAlignment.Right}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.2500000" Value="{x:Static HorizontalAlignment.Left}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.5000000" Value="{x:Static HorizontalAlignment.Left}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="SwitchUnchecked">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SwitchBorder" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="10" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="20" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="10" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchBorder" Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static HorizontalAlignment.Left}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.2500000" Value="{x:Static HorizontalAlignment.Right}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.5000000" Value="{x:Static HorizontalAlignment.Right}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                x:Name="PART_Border"
+                                Width="80"
+                                Height="30"
+                                Background="White"
+                                BorderBrush="Gray"
+                                BorderThickness="1"
+                                CornerRadius="15">
+                                <Border
+                                    x:Name="SwitchBorder"
+                                    Width="27"
+                                    Margin="1"
+                                    HorizontalAlignment="Left"
+                                    Background="White"
+                                    BorderBrush="Gray"
+                                    BorderThickness="1"
+                                    CornerRadius="15" />
+                            </Border>
+                            <ContentPresenter
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="True" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SwitchBorder" Property="HorizontalAlignment" Value="Right" />
+                                <Setter TargetName="PART_Border" Property="Background" Value="#FF00A8E0" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border" Property="BorderBrush" Value="#FF3843C4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <GroupBox Header="GroupBox" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.2*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="Config"
+            FontSize="25" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Language:"
+            FontSize="20" />
+        <ComboBox
+            x:Name="LanguageCfg"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="10,5"
+            d:ItemsSource="{d:SampleData ItemCount=3}"
+            FontSize="18" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Logger Filter:"
+            FontSize="20" />
+        <ComboBox
+            x:Name="LoggerFilterCfg"
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="10,5"
+            d:ItemsSource="{d:SampleData ItemCount=3}"
+            FontSize="18" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Acc-Sync Plot:"
+            FontSize="20" />
+        <CheckBox
+            x:Name="Acc_SyncCfg"
+            Grid.Row="3"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content=""
+            IsChecked="False"
+            Style="{DynamicResource CheckBoxStyle}" />
+        <Label
+            Grid.Row="4"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Auto Check Update:"
+            FontSize="20" />
+        <CheckBox
+            x:Name="CheckUpdateCfg"
+            Grid.Row="4"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content=""
+            IsChecked="True"
+            Style="{DynamicResource CheckBoxStyle}" />
+        <Label
+            Grid.Row="5"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="DLL Injection:"
+            FontSize="20" />
+        <CheckBox
+            x:Name="DLLInjectionCfg"
+            Grid.Row="5"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content=""
+            IsChecked="False"
+            Style="{DynamicResource CheckBoxStyle}" />
+        <Label
+            Grid.Row="6"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="System DPI(%):"
+            FontSize="20" />
+        <local:NumericTextBox
+            x:Name="SystemDPICfg"
+            Grid.Row="6"
+            Grid.Column="1"
+            Margin="60,5"
+            Maximum="1000"
+            Minimum="10"
+            Value="100" />
+        <Label
+            Grid.Row="7"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Donut Plot in HitDelay:"
+            FontSize="18" />
+        <CheckBox
+            x:Name="DonutChartinHitDelayCfg"
+            Grid.Row="7"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content=""
+            IsChecked="True"
+            Style="{DynamicResource CheckBoxStyle}" />
+        <Label
+            Grid.Row="8"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Donut Chart in AllAnalyze:"
+            FontSize="16" />
+        <CheckBox
+            x:Name="DonutChartinAllHitAnalyzeCfg"
+            Grid.Row="8"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content=""
+            IsChecked="True"
+            Style="{DynamicResource CheckBoxStyle}" />
+        <Label
+            Grid.Row="9"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Narrow Delay Interval:"
+            FontSize="18" />
+        <CheckBox
+            x:Name="NarrowDelayIntervalCfg"
+            Grid.Row="9"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content=""
+            IsChecked="True"
+            Style="{DynamicResource CheckBoxStyle}" />
+        <Label
+            Grid.Row="10"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Change Console Style:"
+            FontSize="19" />
+        <CheckBox
+            x:Name="ChangeConsoleStyleCfg"
+            Grid.Row="10"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content=""
+            IsChecked="False"
+            Style="{DynamicResource CheckBoxStyle}" />
+        <Label
+            Grid.Row="11"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Console Alpha:"
+            FontSize="20" />
+        <local:NumericTextBox
+            x:Name="ConsoleAlphaCfg"
+            Grid.Row="11"
+            Grid.Column="1"
+            Margin="60,5"
+            IsEnabled="{Binding IsChecked, ElementName=ChangeConsoleStyleCfg}"
+            Maximum="100"
+            Minimum="10"
+            Value="75" />
+        <Label
+            Grid.Row="12"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Console Font:"
+            FontSize="20" />
+        <ComboBox
+            x:Name="ConsoleFontCfg"
+            Grid.Row="12"
+            Grid.Column="1"
+            Margin="10,5"
+            d:ItemsSource="{d:SampleData ItemCount=3}"
+            FontSize="18"
+            IsEnabled="{Binding IsChecked, ElementName=ChangeConsoleStyleCfg}" />
+        <Label
+            Grid.Row="13"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Console Font Size:"
+            FontSize="20" />
+        <local:NumericTextBox
+            x:Name="ConsoleFontSizeCfg"
+            Grid.Row="13"
+            Grid.Column="1"
+            Margin="60,5"
+            IsEnabled="{Binding IsChecked, ElementName=ChangeConsoleStyleCfg}"
+            Maximum="150"
+            Minimum="1"
+            Value="36" />
+        <Label
+            Grid.Row="14"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Main Exec Path:"
+            FontSize="20" />
+        <TextBox
+            x:Name="MainExecPathCfg"
+            Grid.Row="14"
+            Grid.Column="1"
+            Margin="10,2"
+            VerticalContentAlignment="Center"
+            d:Text="123123123123123123123123123123123"
+            FontSize="20"
+            TextAlignment="Left"
+            TextChanged="MainExecPathCfg_TextChanged"
+            TextWrapping="NoWrap" />
+
+        <!--  Default4Keys  -->
+        <Label
+            Grid.Row="15"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Default Keys:"
+            FontSize="18" />
+        <ComboBox
+            x:Name="DefaultKeysCfg"
+            Grid.Row="15"
+            Grid.Column="1"
+            Margin="60,5"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            FontSize="20"
+            SelectedIndex="0">
+            <ComboBoxItem Content="4 Key" />
+            <ComboBoxItem Content="6 Key" />
+        </ComboBox>
+
+        <!--  DefaultDiffcute  -->
+        <Label
+            Grid.Row="16"
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Content="Default Difficulty:"
+            FontSize="18" />
+        <ComboBox
+            x:Name="DefaultDiffcuteCfg"
+            Grid.Row="16"
+            Grid.Column="1"
+            Margin="60,5"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            FontSize="20"
+            SelectedIndex="0">
+            <ComboBoxItem Content="Easy" />
+            <ComboBoxItem Content="Hard" />
+            <ComboBoxItem Content="Inferno" />
+        </ComboBox>
     </Grid>
 </Window>
