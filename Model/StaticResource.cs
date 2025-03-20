@@ -28,6 +28,19 @@ internal class StaticResource
     public const String AssemblyPath = "MUSYNX_Data/Managed/Assembly-CSharp.dll";
 
     /// <summary>
+    /// 语言代码到语言名称的映射
+    /// </summary>
+    public static readonly Dictionary<string, string> languageNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "zh-cn", "简体中文" },
+            { "zh-tw", "繁體中文" },
+            { "en-us", "English (US)" },
+            { "fr-fr", "Français (France)" },
+            { "de-de", "Deutsch (Deutschland)" },
+            // 可以继续添加其他语言映射
+        };
+
+    /// <summary>
     /// Json序列化设置
     /// </summary>
     public static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };

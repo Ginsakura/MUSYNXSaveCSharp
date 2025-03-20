@@ -8,6 +8,7 @@
     Title="Config"
     Width="450"
     Height="800"
+    d:DataContext="{d:DesignInstance Type=local:Config}"
     mc:Ignorable="d">
     <Window.Resources>
         <Storyboard x:Key="SwitchChecked">
@@ -118,10 +119,13 @@
             VerticalAlignment="Center"
             Content="Config"
             FontSize="25" />
+
+        <!--  Language  -->
         <Label
             Grid.Row="1"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Language:"
@@ -132,11 +136,15 @@
             Grid.Column="1"
             Margin="10,5"
             d:ItemsSource="{d:SampleData ItemCount=3}"
-            FontSize="18" />
+            FontSize="18"
+            SelectionChanged="LanguageCfg_SelectionChanged" />
+
+        <!--  Logger Filter  -->
         <Label
             Grid.Row="2"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Logger Filter:"
@@ -145,13 +153,25 @@
             x:Name="LoggerFilterCfg"
             Grid.Row="2"
             Grid.Column="1"
-            Margin="10,5"
-            d:ItemsSource="{d:SampleData ItemCount=3}"
-            FontSize="18" />
+            Margin="60,5"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            FontSize="18"
+            SelectedIndex="1"
+            SelectionChanged="LoggerFilterCfg_SelectionChanged">
+            <ComboBoxItem Content="DEBUG" />
+            <ComboBoxItem Content="INFO" />
+            <ComboBoxItem Content="WARN" />
+            <ComboBoxItem Content="ERROR" />
+            <ComboBoxItem Content="FATAL" />
+        </ComboBox>
+
+        <!--  Acc-Sync Plot  -->
         <Label
             Grid.Row="3"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Acc-Sync Plot:"
@@ -162,13 +182,18 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Checked="Acc_SyncCfg_Checked"
             Content=""
             IsChecked="False"
-            Style="{DynamicResource CheckBoxStyle}" />
+            Style="{DynamicResource CheckBoxStyle}"
+            Unchecked="Acc_SyncCfg_Checked" />
+
+        <!--  Auto Check Update  -->
         <Label
             Grid.Row="4"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Auto Check Update:"
@@ -179,13 +204,18 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Checked="CheckUpdateCfg_Checked"
             Content=""
             IsChecked="True"
-            Style="{DynamicResource CheckBoxStyle}" />
+            Style="{DynamicResource CheckBoxStyle}"
+            Unchecked="CheckUpdateCfg_Checked" />
+
+        <!--  DLL Injection  -->
         <Label
             Grid.Row="5"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="DLL Injection:"
@@ -196,13 +226,18 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Checked="DLLInjectionCfg_Checked"
             Content=""
             IsChecked="False"
-            Style="{DynamicResource CheckBoxStyle}" />
+            Style="{DynamicResource CheckBoxStyle}"
+            Unchecked="DLLInjectionCfg_Checked" />
+
+        <!--  System DPI  -->
         <Label
             Grid.Row="6"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="System DPI(%):"
@@ -212,30 +247,39 @@
             Grid.Row="6"
             Grid.Column="1"
             Margin="60,5"
+            d:Value="100"
             Maximum="1000"
             Minimum="10"
-            Value="100" />
+            Value="{Binding SystemDPI}" />
+
+        <!--  Donut Plot in HitAnalyze  -->
         <Label
             Grid.Row="7"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
-            Content="Donut Plot in HitDelay:"
-            FontSize="18" />
+            Content="Donut Plot in HitAnalyze:"
+            FontSize="16" />
         <CheckBox
             x:Name="DonutChartinHitDelayCfg"
             Grid.Row="7"
             Grid.Column="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Checked="DonutChartinHitDelayCfg_Checked"
             Content=""
             IsChecked="True"
-            Style="{DynamicResource CheckBoxStyle}" />
+            Style="{DynamicResource CheckBoxStyle}"
+            Unchecked="DonutChartinHitDelayCfg_Checked" />
+
+        <!--  Donut Chart in AllHitAnalyze  -->
         <Label
             Grid.Row="8"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Donut Chart in AllAnalyze:"
@@ -246,13 +290,18 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Checked="DonutChartinAllHitAnalyzeCfg_Checked"
             Content=""
             IsChecked="True"
-            Style="{DynamicResource CheckBoxStyle}" />
+            Style="{DynamicResource CheckBoxStyle}"
+            Unchecked="DonutChartinAllHitAnalyzeCfg_Checked" />
+
+        <!--  Narrow Delay Interval  -->
         <Label
             Grid.Row="9"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Narrow Delay Interval:"
@@ -263,13 +312,18 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Checked="NarrowDelayIntervalCfg_Checked"
             Content=""
             IsChecked="True"
-            Style="{DynamicResource CheckBoxStyle}" />
+            Style="{DynamicResource CheckBoxStyle}"
+            Unchecked="NarrowDelayIntervalCfg_Checked" />
+
+        <!--  Change Console Style  -->
         <Label
             Grid.Row="10"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Change Console Style:"
@@ -280,13 +334,18 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Checked="ChangeConsoleStyleCfg_Checked"
             Content=""
             IsChecked="False"
-            Style="{DynamicResource CheckBoxStyle}" />
+            Style="{DynamicResource CheckBoxStyle}"
+            Unchecked="ChangeConsoleStyleCfg_Checked" />
+
+        <!--  Console Alpha  -->
         <Label
             Grid.Row="11"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Console Alpha:"
@@ -296,14 +355,18 @@
             Grid.Row="11"
             Grid.Column="1"
             Margin="60,5"
+            d:Value="75"
             IsEnabled="{Binding IsChecked, ElementName=ChangeConsoleStyleCfg}"
             Maximum="100"
             Minimum="10"
-            Value="75" />
+            Value="{Binding ConsoleAlpha}" />
+
+        <!--  Console Font  -->
         <Label
             Grid.Row="12"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Console Font:"
@@ -315,11 +378,15 @@
             Margin="10,5"
             d:ItemsSource="{d:SampleData ItemCount=3}"
             FontSize="18"
-            IsEnabled="{Binding IsChecked, ElementName=ChangeConsoleStyleCfg}" />
+            IsEnabled="{Binding IsChecked, ElementName=ChangeConsoleStyleCfg}"
+            SelectionChanged="ConsoleFontCfg_SelectionChanged" />
+
+        <!--  Console Font Size  -->
         <Label
             Grid.Row="13"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Console Font Size:"
@@ -329,14 +396,18 @@
             Grid.Row="13"
             Grid.Column="1"
             Margin="60,5"
+            d:Value="36"
             IsEnabled="{Binding IsChecked, ElementName=ChangeConsoleStyleCfg}"
             Maximum="150"
             Minimum="1"
-            Value="36" />
+            Value="{Binding ConsoleFontSize}" />
+
+        <!--  Main Exec Path  -->
         <Label
             Grid.Row="14"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Main Exec Path:"
@@ -353,11 +424,12 @@
             TextChanged="MainExecPathCfg_TextChanged"
             TextWrapping="NoWrap" />
 
-        <!--  Default4Keys  -->
+        <!--  Default Keys  -->
         <Label
             Grid.Row="15"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Default Keys:"
@@ -370,16 +442,18 @@
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             FontSize="20"
-            SelectedIndex="0">
+            SelectedIndex="0"
+            SelectionChanged="DefaultKeysCfg_SelectionChanged">
             <ComboBoxItem Content="4 Key" />
             <ComboBoxItem Content="6 Key" />
         </ComboBox>
 
-        <!--  DefaultDiffcute  -->
+        <!--  Default Diffcute  -->
         <Label
             Grid.Row="16"
             Grid.Column="0"
             Margin="0,0,10,0"
+            Padding="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Content="Default Difficulty:"
@@ -392,7 +466,8 @@
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             FontSize="20"
-            SelectedIndex="0">
+            SelectedIndex="0"
+            SelectionChanged="DefaultDiffcuteCfg_SelectionChanged">
             <ComboBoxItem Content="Easy" />
             <ComboBoxItem Content="Hard" />
             <ComboBoxItem Content="Inferno" />

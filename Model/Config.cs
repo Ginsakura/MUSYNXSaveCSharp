@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text.Json;
 using System.Windows.Input;
+using Windows.Globalization;
 
 namespace MUSYNCSaveDecode.Model;
 
@@ -48,6 +49,7 @@ public partial class Config
     {
         CompressLogFile();
         // Initialize default values
+        Language = "zh-CN";
         LoggerFilterString = "DEBUG";
         LoggerFilter = SourceLevels.Information;
         Acc_Sync = false;
@@ -80,6 +82,7 @@ public partial class Config
         }
     }
 
+    public String Language { get; set; }
     public String LoggerFilterString { get; set; }
     public SourceLevels LoggerFilter { get; set; }
     public Boolean Acc_Sync { get; set; }
@@ -116,6 +119,7 @@ public partial class Config
                 {
                     switch (key)
                     {
+                        case "Language": Language = value.ToString() ?? "zh-CN"; break;
                         case "LoggerFilterString": LoggerFilterString = value.ToString() ?? "INFO"; break;
                         case "Acc_Sync": Acc_Sync = Convert.ToBoolean(value); break;
                         case "CheckUpdate": CheckUpdate = Convert.ToBoolean(value); break;
