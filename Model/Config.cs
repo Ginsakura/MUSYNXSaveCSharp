@@ -18,40 +18,27 @@ public partial class Config
     private static readonly object _Lock = new();
     private static readonly ViewModel vm = ViewModel.Instance;
 
-    ///// <summary>
-    ///// 日志等级枚举
-    ///// </summary>
-    //public enum LogLevel
-    //{
-    //    NOTSET = 0,
-    //    DEBUG,
-    //    INFO,
-    //    WARNING,
-    //    ERROR,
-    //    CRITICAL,
-    //}
-
     /// <summary>
     /// 日志等级映射
     /// </summary>
-    private static readonly Dictionary<String, SourceLevels> LogLevelMap = new(){
-        {"NOTSET", SourceLevels.Off},
-        {"DEBUG", SourceLevels.Verbose},
-        {"INFO", SourceLevels.Information},
-        {"WARN", SourceLevels.Warning},
-        {"WARNING", SourceLevels.Warning},
-        {"ERROR", SourceLevels.Error},
-        {"FATAL", SourceLevels.Critical},
-        {"CRITICAL", SourceLevels.Critical},
+    private static readonly Dictionary<String, StaticResource.LogLevel> LogLevelMap = new(){
+        {"NOTSET", StaticResource.LogLevel.Off},
+        {"DEBUG", StaticResource.LogLevel.Verbose},
+        {"INFO", StaticResource.LogLevel.Information},
+        {"WARN", StaticResource.LogLevel.Warning},
+        {"WARNING", StaticResource.LogLevel.Warning},
+        {"ERROR", StaticResource.LogLevel.Error},
+        {"FATAL", StaticResource.LogLevel.Critical},
+        {"CRITICAL", StaticResource.LogLevel.Critical},
     };
 
     private Config()
     {
         CompressLogFile();
         // Initialize default values
-        Language = "zh-CN";
+        Language = "zh-cn";
         LoggerFilterString = "DEBUG";
-        LoggerFilter = SourceLevels.Information;
+        LoggerFilter = StaticResource.LogLevel.Information;
         Acc_Sync = false;
         CheckUpdate = true;
         DLLInjection = false;
@@ -84,7 +71,7 @@ public partial class Config
 
     public String Language { get; set; }
     public String LoggerFilterString { get; set; }
-    public SourceLevels LoggerFilter { get; set; }
+    public StaticResource.LogLevel LoggerFilter { get; set; }
     public Boolean Acc_Sync { get; set; }
     public Boolean CheckUpdate { get; set; }
     public Boolean DLLInjection { get; set; }

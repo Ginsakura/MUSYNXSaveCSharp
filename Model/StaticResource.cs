@@ -3,8 +3,21 @@ using System.Text.Json;
 
 namespace MUSYNCSaveDecode.Model;
 
-internal class StaticResource
+public static class StaticResource
 {
+    private static readonly object _Lock = new();
+
+    private static Int32 _LogCount = 0;
+    public static Int32 LogCount
+    {
+        get { lock (_Lock) { return _LogCount; } }
+    }
+
+    public static void IncrementLogCount()
+    {
+        lock (_Lock) { _LogCount++; };
+    }
+
     /// <summary>
     /// 游戏文件名
     /// </summary>
@@ -25,6 +38,9 @@ internal class StaticResource
     /// </summary>
     public const String UpdateTip = "检测到新版本，点击打开GitHub仓库";
 
+    /// <summary>
+    /// DLL文件路径
+    /// </summary>
     public const String AssemblyPath = "MUSYNX_Data/Managed/Assembly-CSharp.dll";
 
     /// <summary>
@@ -39,6 +55,19 @@ internal class StaticResource
             { "de-de", "Deutsch (Deutschland)" },
             // 可以继续添加其他语言映射
         };
+
+    /// <summary>
+    /// 日志级别枚举
+    /// </summary>
+    public enum LogLevel
+    {
+        Off,
+        Verbose,
+        Information,
+        Warning,
+        Error,
+        Critical
+    }
 
     /// <summary>
     /// Json序列化设置
