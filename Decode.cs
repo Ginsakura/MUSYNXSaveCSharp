@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters;
 using System.Collections.Generic;
 using System;
 using Microsoft.VisualBasic.FileIO;
+using System.Diagnostics;
 
 namespace MUSYNCSaveDecode;
 
@@ -16,22 +17,37 @@ public class Decode
     private readonly Object userMemoryObj;
     private readonly Type userMemoryType;
     private readonly UserMemory userMemory = UserMemory.Instance;
+    private readonly Logger _logger = Logger.Instance;
+
     public Decode(String savePath)
     {
-        // 加载程序集
-        assembly = Assembly.LoadFrom(Path.Combine("D:\\Program Files\\steam\\steamapps\\common\\MUSYNX\\", "MUSYNX_Data/Managed/Assembly-CSharp.dll"));
-        songSaveInfo = assembly.GetType("SongSaveInfo")
-            ?? throw new ArgumentException($"Type 'Assembly-CSharp.SongSaveInfo' not found.");
+        // 创建并启动Stopwatch实例
+        Stopwatch stopwatch = Stopwatch.StartNew();
 
-        // 读取文件内容
-        string base64EncodedData = File.ReadAllText(savePath);
+        // 执行目标函数
+        {
+            // 加载程序集
+            assembly = Assembly.LoadFrom(Path.Combine("D:\\Program Files\\steam\\steamapps\\common\\MUSYNX\\", "MUSYNX_Data/Managed/Assembly-CSharp.dll"));
+            songSaveInfo = assembly.GetType("SongSaveInfo")
+                ?? throw new ArgumentException($"Type 'Assembly-CSharp.SongSaveInfo' not found.");
 
-        // 解码Base64字符串为字节数组
-        byte[] decodedBytes = Convert.FromBase64String(base64EncodedData);
+            // 读取文件内容
+            string base64EncodedData = File.ReadAllText(savePath);
 
-        MemoryStream stream = new MemoryStream(decodedBytes);
-        userMemoryObj = new BinaryFormatter().Deserialize(stream);
-        userMemoryType = userMemoryObj.GetType();
+            // 解码Base64字符串为字节数组
+            byte[] decodedBytes = Convert.FromBase64String(base64EncodedData);
+
+            MemoryStream stream = new MemoryStream(decodedBytes);
+            userMemoryObj = new BinaryFormatter().Deserialize(stream);
+            userMemoryType = userMemoryObj.GetType();
+            DecodeSaveFile();
+        }
+
+        // 停止计时
+        stopwatch.Stop();
+        // 获取经过的时间，以纳秒为单位
+        TimeSpan elapsed = (TimeSpan)stopwatch.Elapsed;
+        _logger.Debug($"Function Running... [{elapsed.TotalMilliseconds:F3}]", "Decode Constructor");
     }
 
     // 通用方法：获取私有字段的值
@@ -80,6 +96,7 @@ public class Decode
                 // 映射字段值到本项目的 SongSaveInfo 类
                 SongSaveInfo songInfo = new SongSaveInfo
                 {
+                    isUploadCount = (Boolean)(songSaveInfoType.GetField("isUploadCount", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(item) ?? false),
                     SongId = (int)(songSaveInfoType.GetField("SongId", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(item) ?? 0),
                     SpeedStall = (int)(songSaveInfoType.GetField("SpeedStall", BindingFlags.Instance | BindingFlags.Public)?.GetValue(item) ?? 0),
                     SyncNumber = (int)(songSaveInfoType.GetField("SyncNumber", BindingFlags.Instance | BindingFlags.Public)?.GetValue(item) ?? 0),
@@ -93,47 +110,59 @@ public class Decode
         return songInfoList;
     }
 
-    public void Function()
+    public void DecodeSaveFile()
     {
-        userMemory.version = GetNonPublicIntField("version");
-        //userMemory.saveInfoList = (object)GetNonPublicField("saveInfoList", typeof(object));
-        userMemory.saveInfoList = GetNonPublicListField("saveInfoList");
-        userMemory.purchaseIds = GetNonPublicStringArrayField("purchaseIds");
-        userMemory.crc = GetNonPublicIntField("crc");
-        userMemory.songIndex = GetNonPublicIntField("songIndex");
-        userMemory.isHard = GetNonPublicIntField("isHard");
-        userMemory.buttonNumber = GetNonPublicIntField("buttonNumber");
-        userMemory.sortNum = GetNonPublicIntField("sortNum");
-        userMemory.missVibrate = GetNonPublicBoolField("missVibrate");
-        userMemory.soundHelper = GetNonPublicIntField("soundHelper");
-        userMemory.displayAdjustment = GetNonPublicIntField("displayAdjustment");
-        userMemory.judgeCompensate = GetNonPublicIntField("judgeCompensate");
-        userMemory.advSceneSettringString = GetNonPublicStringField("advSceneSettringString");
-        userMemory.metronomeSquipment = GetNonPublicStringField("metronomeSquipment");
-        userMemory.playTimeUIA = GetNonPublicIntField("playTimeUIA");
-        userMemory.playTimeUIB = GetNonPublicIntField("playTimeUIB");
-        userMemory.playTimeUIC = GetNonPublicIntField("playTimeUIC");
-        userMemory.playTimeUID = GetNonPublicIntField("playTimeUID");
-        userMemory.playTimeUIE = GetNonPublicIntField("playTimeUIE");
-        userMemory.playTimeUIF = GetNonPublicIntField("playTimeUIF");
-        userMemory.playTimeRankEX = GetNonPublicIntField("playTimeRankEX");
-        userMemory.playTimeKnockEX = GetNonPublicIntField("playTimeKnockEX");
-        userMemory.playTimeKnockNote = GetNonPublicIntField("playTimeKnockNote");
-        userMemory.playVsync = GetNonPublicBoolField("playVsync");
-        userMemory.buttonSetting4K = GetNonPublicIntArrayField("buttonSetting4K");
-        userMemory.buttonSetting6K = GetNonPublicIntArrayField("buttonSetting6K");
-        userMemory.hiddenUnlockSongs = GetNonPublicBoolField("hiddenUnlockSongs");
-        userMemory.hideLeaderboardMini = GetNonPublicBoolField("hideLeaderboardMini");
-        userMemory.playingSceneName = GetNonPublicStringField("playingSceneName");
-        userMemory.selectSongName = GetNonPublicStringField("selectSongName");
-        userMemory.sceneName = GetNonPublicStringField("sceneName");
-        userMemory.busVolume = GetNonPublicFloatField("busVolume");
-        userMemory.advSceneSettingString = GetNonPublicStringField("advSceneSettingString");
-        userMemory.dropSpeed = GetNonPublicIntField("dropSpeed");
-        UserMemory.isUseUserMemoryDropSpeed = (bool)((userMemoryType.GetField("isUseUserMemoryDropSpeed", BindingFlags.Public | BindingFlags.Static))?.GetValue(userMemoryObj) ?? false);
-        userMemory.dropSpeedFloat = GetNonPublicFloatField("dropSpeedFloat");
-        userMemory.isOpenVSync = GetNonPublicBoolField("isOpenVSync");
-        userMemory.hadSaveFpsAndVSync = GetNonPublicBoolField("hadSaveFpsAndVSync");
-        userMemory.fps = GetNonPublicIntField("fps");
+        // 创建并启动Stopwatch实例
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        // 执行目标函数
+        {
+            userMemory.version = GetNonPublicIntField("version");
+            //userMemory.saveInfoList = (object)GetNonPublicField("saveInfoList", typeof(object));
+            userMemory.saveInfoList = GetNonPublicListField("saveInfoList");
+            userMemory.purchaseIds = GetNonPublicStringArrayField("purchaseIds");
+            userMemory.crc = GetNonPublicIntField("crc");
+            userMemory.songIndex = GetNonPublicIntField("songIndex");
+            userMemory.isHard = GetNonPublicIntField("isHard");
+            userMemory.buttonNumber = GetNonPublicIntField("buttonNumber");
+            userMemory.sortNum = GetNonPublicIntField("sortNum");
+            userMemory.missVibrate = GetNonPublicBoolField("missVibrate");
+            userMemory.soundHelper = GetNonPublicIntField("soundHelper");
+            userMemory.displayAdjustment = GetNonPublicIntField("displayAdjustment");
+            userMemory.judgeCompensate = GetNonPublicIntField("judgeCompensate");
+            userMemory.advSceneSettringString = GetNonPublicStringField("advSceneSettringString");
+            userMemory.metronomeSquipment = GetNonPublicStringField("metronomeSquipment");
+            userMemory.playTimeUIA = GetNonPublicIntField("playTimeUIA");
+            userMemory.playTimeUIB = GetNonPublicIntField("playTimeUIB");
+            userMemory.playTimeUIC = GetNonPublicIntField("playTimeUIC");
+            userMemory.playTimeUID = GetNonPublicIntField("playTimeUID");
+            userMemory.playTimeUIE = GetNonPublicIntField("playTimeUIE");
+            userMemory.playTimeUIF = GetNonPublicIntField("playTimeUIF");
+            userMemory.playTimeRankEX = GetNonPublicIntField("playTimeRankEX");
+            userMemory.playTimeKnockEX = GetNonPublicIntField("playTimeKnockEX");
+            userMemory.playTimeKnockNote = GetNonPublicIntField("playTimeKnockNote");
+            userMemory.playVsync = GetNonPublicBoolField("playVsync");
+            userMemory.buttonSetting4K = GetNonPublicIntArrayField("buttonSetting4K");
+            userMemory.buttonSetting6K = GetNonPublicIntArrayField("buttonSetting6K");
+            userMemory.hiddenUnlockSongs = GetNonPublicBoolField("hiddenUnlockSongs");
+            userMemory.hideLeaderboardMini = GetNonPublicBoolField("hideLeaderboardMini");
+            userMemory.playingSceneName = GetNonPublicStringField("playingSceneName");
+            userMemory.selectSongName = GetNonPublicStringField("selectSongName");
+            userMemory.sceneName = GetNonPublicStringField("sceneName");
+            userMemory.busVolume = GetNonPublicFloatField("busVolume");
+            userMemory.advSceneSettingString = GetNonPublicStringField("advSceneSettingString");
+            userMemory.dropSpeed = GetNonPublicIntField("dropSpeed");
+            userMemory.isUseUserMemoryDropSpeed = (bool)((userMemoryType.GetField("isUseUserMemoryDropSpeed", BindingFlags.Public | BindingFlags.Static))?.GetValue(userMemoryObj) ?? false);
+            userMemory.dropSpeedFloat = GetNonPublicFloatField("dropSpeedFloat");
+            userMemory.isOpenVSync = GetNonPublicBoolField("isOpenVSync");
+            userMemory.hadSaveFpsAndVSync = GetNonPublicBoolField("hadSaveFpsAndVSync");
+            userMemory.fps = GetNonPublicIntField("fps");
+        }
+
+        // 停止计时
+        stopwatch.Stop();
+        // 获取经过的时间，以纳秒为单位
+        TimeSpan elapsed = (TimeSpan)stopwatch.Elapsed;
+        _logger.Debug($"Function Running... [{elapsed.TotalMilliseconds:F3}ms]", "DecodeSaveFile");
     }
 }

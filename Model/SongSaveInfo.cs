@@ -9,19 +9,12 @@ namespace MUSYNCSaveDecode.Model;
 public class SongSaveInfo
 {
     public bool isUploadCount;
-
     public int SongId { get; set; }
-
     public int SpeedStall { get; set; }
-
     public int SyncNumber { get; set; }
-
     public float UploadScore { get; set; }
-
     public int PlayCount { get; set; }
-
     public bool Isfav { get; set; }
-
     public int CrcInt => SongId + SyncNumber + PlayCount;
 
     public SongSaveInfo()

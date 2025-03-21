@@ -1,22 +1,32 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
+﻿using System.IO;
 using System.Text.Json;
-using System.Windows.Input;
-using Windows.Globalization;
 
 namespace MUSYNCSaveDecode.Model;
 
-public partial class Config
+public class Config
 {
-    /// <summary>
-    /// 静态实例对象变量
-    /// </summary>
-    /// <remarks>全局唯一</remarks>
+    public String Language { get; set; } = "zh-cn";
+    public String LoggerFilterString { get; set; } = "INFO";
+    public StaticResource.LogLevel LoggerFilter { get; set; } = StaticResource.LogLevel.Information;
+    public Boolean Acc_Sync { get; set; } = false;
+    public Boolean CheckUpdate { get; set; } = true;
+    public Boolean DLLInjection { get; set; } = false;
+    public Int32 SystemDPI { get; set; } = 100;
+    public Boolean DonutChartinHitDelay { get; set; } = true;
+    public Boolean DonutChartinAllHitAnalyze { get; set; } = true;
+    public Boolean NarrowDelayInterval { get; set; } = true;
+    public Int32 ConsoleAlpha { get; set; } = 75;
+    public String ConsoleFont { get; set; } = "霞鹜文楷等宽";
+    public Int32 ConsoleFontSize { get; set; } = 36;
+    public String MainExecPath { get; set; } = "";
+    public Boolean ChangeConsoleStyle { get; set; } = true;
+    public Boolean DefaultKeys { get; set; } = false;
+    public Int32 DefaultDiffcute { get; set; } = 0;
+
     private static Config? _instance;
-    private static readonly object _Lock = new();
-    private static readonly ViewModel vm = ViewModel.Instance;
+    private static readonly object _lock = new();
+    //private static readonly ViewModel vm = ViewModel.Instance;
+    private static readonly Logger _logger = Logger.Instance;
 
     /// <summary>
     /// 日志等级映射
@@ -34,26 +44,6 @@ public partial class Config
 
     private Config()
     {
-        CompressLogFile();
-        // Initialize default values
-        Language = "zh-cn";
-        LoggerFilterString = "DEBUG";
-        LoggerFilter = StaticResource.LogLevel.Information;
-        Acc_Sync = false;
-        CheckUpdate = true;
-        DLLInjection = false;
-        SystemDPI = 100;
-        DonutChartinHitDelay = true;
-        DonutChartinAllHitAnalyze = true;
-        NarrowDelayInterval = true;
-        ConsoleAlpha = 75;
-        ConsoleFont = "霞鹜文楷等宽";
-        ConsoleFontSize = 36;
-        MainExecPath = "";
-        ChangeConsoleStyle = true;
-        DefaultKeys = false;
-        DefaultDiffcute = 0;
-
         LoadConfig();
     }
 
@@ -63,134 +53,73 @@ public partial class Config
         {
             if (_instance == null)
             {
-                lock (_Lock) { _instance ??= new Config(); }
+                lock (_lock) { _instance ??= new Config(); }
             }
             return _instance;
         }
     }
 
-    public String Language { get; set; }
-    public String LoggerFilterString { get; set; }
-    public StaticResource.LogLevel LoggerFilter { get; set; }
-    public Boolean Acc_Sync { get; set; }
-    public Boolean CheckUpdate { get; set; }
-    public Boolean DLLInjection { get; set; }
-    public Int32 SystemDPI { get; set; }
-    public Boolean DonutChartinHitDelay { get; set; }
-    public Boolean DonutChartinAllHitAnalyze { get; set; }
-    public Boolean NarrowDelayInterval { get; set; }
-    public Int32 ConsoleAlpha { get; set; }
-    public String ConsoleFont { get; set; }
-    public Int32 ConsoleFontSize { get; set; }
-    public String MainExecPath { get; set; }
-    public Boolean ChangeConsoleStyle { get; set; }
-    public Boolean DefaultKeys { get; set; }
-    public Int32 DefaultDiffcute { get; set; }
-
-    private void LoadConfig()
+    public void LoadConfig()
     {
-        if (!File.Exists(StaticResource.ConfigFilePath))
+        Config? loadedConfig = null;
+        if (File.Exists(StaticResource.ConfigFilePath))
         {
-            //_logger.LogError($"File \"{StaticResource.ConfigFilePath}\" does not exist.");
-            return;
-        }
-
-        try
-        {
-            using var fileStream = File.OpenRead(StaticResource.ConfigFilePath);
-            var config = JsonSerializer.Deserialize<Dictionary<String, object>>(fileStream);
-
-            if (config != null)
+            try
             {
-                foreach (var (key, value) in config)
-                {
-                    switch (key)
-                    {
-                        case "Language": Language = value.ToString() ?? "zh-CN"; break;
-                        case "LoggerFilterString": LoggerFilterString = value.ToString() ?? "INFO"; break;
-                        case "Acc_Sync": Acc_Sync = Convert.ToBoolean(value); break;
-                        case "CheckUpdate": CheckUpdate = Convert.ToBoolean(value); break;
-                        case "DLLInjection": DLLInjection = Convert.ToBoolean(value); break;
-                        case "SystemDPI": SystemDPI = Convert.ToInt32(value); break;
-                        case "DonutChartinHitDelay": DonutChartinHitDelay = Convert.ToBoolean(value); break;
-                        case "DonutChartinAllHitAnalyze": DonutChartinAllHitAnalyze = Convert.ToBoolean(value); break;
-                        case "NarrowDelayInterval": NarrowDelayInterval = Convert.ToBoolean(value); break;
-                        case "ConsoleAlpha": ConsoleAlpha = Convert.ToInt32(value); break;
-                        case "ConsoleFont": ConsoleFont = value.ToString() ?? "霞鹜文楷等宽"; break;
-                        case "ConsoleFontSize": ConsoleFontSize = Convert.ToInt32(value); break;
-                        case "MainExecPath": MainExecPath = value.ToString() ?? ""; break;
-                        case "ChangeConsoleStyle": ChangeConsoleStyle = Convert.ToBoolean(value); break;
-                        case "DefaultKeys": DefaultKeys = Convert.ToBoolean(value); break;
-                        case "DefaultDiffcute": DefaultDiffcute = Convert.ToInt32(value); break;
-                    }
-                }
-
-                LoggerFilter = LogLevelMap[LoggerFilterString];
-                //_logger.LogInformation($"Configuration loaded from \"{StaticResource.ConfigFilePath}\".");
+                using var fileStream = File.OpenRead(StaticResource.ConfigFilePath);
+                loadedConfig = JsonSerializer.Deserialize<Config>(fileStream);
+            }
+            catch (Exception ex)
+            {
+                // 处理反序列化错误，例如记录日志
+                _logger.Error($"配置文件加载失败: {ex.Message}", "LoadConfig");
             }
         }
-        catch (Exception ex)
+
+        if (loadedConfig != null)
         {
-            //_logger.LogError(ex, $"Failed to load configuration from \"{StaticResource.ConfigFilePath}\".");
+            // 将加载的配置应用到当前实例
+            Language = loadedConfig.Language;
+            LoggerFilterString = loadedConfig.LoggerFilterString;
+            LoggerFilter = LogLevelMap[loadedConfig.LoggerFilterString];
+            Acc_Sync = loadedConfig.Acc_Sync;
+            CheckUpdate = loadedConfig.CheckUpdate;
+            DLLInjection = loadedConfig.DLLInjection;
+            SystemDPI = loadedConfig.SystemDPI;
+            DonutChartinHitDelay = loadedConfig.DonutChartinHitDelay;
+            DonutChartinAllHitAnalyze = loadedConfig.DonutChartinAllHitAnalyze;
+            NarrowDelayInterval = loadedConfig.NarrowDelayInterval;
+            ConsoleAlpha = loadedConfig.ConsoleAlpha;
+            ConsoleFont = loadedConfig.ConsoleFont;
+            ConsoleFontSize = loadedConfig.ConsoleFontSize;
+            MainExecPath = loadedConfig.MainExecPath;
+            ChangeConsoleStyle = loadedConfig.ChangeConsoleStyle;
+            DefaultKeys = loadedConfig.DefaultKeys;
+            DefaultDiffcute = loadedConfig.DefaultDiffcute;
         }
     }
 
     public void SaveConfig()
     {
-        var configData = new Dictionary<String, object>
-        {
-            { "LoggerFilter", LoggerFilterString },
-            { "Acc_Sync", Acc_Sync },
-            { "CheckUpdate", CheckUpdate },
-            { "DLLInjection", DLLInjection },
-            { "SystemDPI", SystemDPI },
-            { "DonutChartinHitDelay", DonutChartinHitDelay },
-            { "DonutChartinAllHitAnalyze", DonutChartinAllHitAnalyze },
-            { "NarrowDelayInterval", NarrowDelayInterval },
-            { "ConsoleAlpha", ConsoleAlpha },
-            { "ConsoleFont", ConsoleFont },
-            { "ConsoleFontSize", ConsoleFontSize },
-            { "MainExecPath", MainExecPath },
-            { "ChangeConsoleStyle", ChangeConsoleStyle },
-            { "DefaultKeys", DefaultKeys },
-            { "DefaultDiffcute", DefaultDiffcute }
-        };
+        // 创建一个选项对象，用于格式化Json
+        JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };// 格式化输出
 
-        String directory = Path.GetDirectoryName(StaticResource.ConfigFilePath) ?? Path.Combine(Directory.GetCurrentDirectory(), "musync_data");
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
+        // 使用反射排除 LoggerFilter 属性
+        var properties = typeof(Config).GetProperties()
+            .Where(p => p.Name != nameof(LoggerFilter))
+            .ToDictionary(p => p.Name, p => p.GetValue(this));
+
+        // 序列化配置对象（排除 LoggerFilter）
+        string jsonString = JsonSerializer.Serialize(properties, options);
 
         try
         {
-            using var fileStream = File.OpenWrite(StaticResource.ConfigFilePath);
-            JsonSerializer.Serialize(fileStream, configData, StaticResource.jsonSerializerOptions);
-            //_logger.LogInformation($"Configuration saved to \"{StaticResource.ConfigFilePath}\".");
+            File.WriteAllText(StaticResource.ConfigFilePath, jsonString);
         }
         catch (Exception ex)
         {
-            //_logger.LogError(ex, $"Failed to save configuration to \"{StaticResource.ConfigFilePath}\".");
-        }
-    }
-
-    public static void CompressLogFile()
-    {
-        if (!Directory.Exists(StaticResource.LogCompressDir))
-        {
-            Directory.CreateDirectory(StaticResource.LogCompressDir);
-        }
-
-        Int32 nextIndex = Directory.GetFiles(StaticResource.LogCompressDir).Length;
-        String compressLogName = $"log.{nextIndex}.gz";
-
-        if (File.Exists(StaticResource.LogFilePath))
-        {
-            using FileStream fIn = File.OpenRead(StaticResource.LogFilePath);
-            using GZipStream fOut = new(File.Create(Path.Combine(StaticResource.LogCompressDir, compressLogName)), CompressionMode.Compress);
-            fIn.CopyTo(fOut);
-
-            File.Delete(StaticResource.LogFilePath);
+            // 处理序列化或文件写入错误，例如记录日志
+            _logger.Error($"配置文件保存失败: {ex.Message}", "SaveConfig");
         }
     }
 }

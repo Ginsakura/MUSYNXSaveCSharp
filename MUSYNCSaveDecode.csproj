@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
@@ -12,8 +12,8 @@
 		<ApplicationIcon>Musync.ico</ApplicationIcon>
 		<PlatformTarget>x86</PlatformTarget>
 		<Authors>Ginsakura</Authors>
-		<Version>0.2.13</Version>
-		<AssemblyVersion>0.2.13</AssemblyVersion>
+		<Version>0.3.7</Version>
+		<AssemblyVersion>0.3.7</AssemblyVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>

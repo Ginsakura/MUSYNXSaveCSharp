@@ -113,7 +113,7 @@ public class Logger
         {
             sb.Append($" - [{functionName}]");
         }
-        sb.Append($" - {message}");
+        sb.Append($" - {message}\r\n");
         IncrementLogCount();
         return sb.ToString();
     }

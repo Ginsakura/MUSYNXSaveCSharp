@@ -40,6 +40,12 @@ public partial class Config : Window, INotifyPropertyChanged
         set { _Language = value; OnPropertyChanged(nameof(Language)); }
     }
 
+    public String LoggerFilterString
+    {
+        get => _LoggerFilterString;
+        set { _LoggerFilterString = value; OnPropertyChanged(nameof(LoggerFilterString)); }
+    }
+
     public Int32 SystemDPI
     {
         get => _SystemDPI;
@@ -144,8 +150,9 @@ public partial class Config : Window, INotifyPropertyChanged
             string fileName = Path.GetFileName(file); // 获取文件名（如"zh-cn.json"）
             string languageCode = Path.GetFileNameWithoutExtension(fileName); // 获取语言代码（如"zh-cn"）
 
-            if (StaticResource.languageNames.TryGetValue(languageCode, out string languageName))
+            if (StaticResource.languageNames.TryGetValue(languageCode, out string? languageName))
             {
+                if (string.IsNullOrEmpty(languageName)) { languageName = languageCode; }
                 LanguageCfg.Items.Add(languageName); // 将语言名称添加到ComboBox中
             }
         }
