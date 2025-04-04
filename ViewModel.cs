@@ -1,15 +1,7 @@
 ﻿using MUSYNCSaveDecode.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MUSYNCSaveDecode;
@@ -117,5 +109,15 @@ public partial class ViewModel : INotifyPropertyChanged
     /// 资源文件版本
     /// </summary>
     public Int32 ResourceVersion
-    { get => _ResourceVersion; set { _ResourceVersion = value; OnPropertyChanged(nameof(_ResourceVersion)); } }
+    {
+        get => _ResourceVersion;
+        set { _ResourceVersion = value; OnPropertyChanged(nameof(_ResourceVersion)); }
+    }
+
+    private IsGameRunningLabelPropety _IsGameRunningLabelPropety = new IsGameRunningLabelPropety();
+    public IsGameRunningLabelPropety IsGameRunningLabelPropety
+    {
+        get => _IsGameRunningLabelPropety;
+        set { _IsGameRunningLabelPropety = value; OnPropertyChanged(nameof(_IsGameRunningLabelPropety)); }
+    }
 }

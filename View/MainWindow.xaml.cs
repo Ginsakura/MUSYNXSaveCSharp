@@ -1,8 +1,10 @@
-﻿using MUSYNCSaveDecode.Model;
+﻿using Microsoft.Win32;
+using MUSYNCSaveDecode.Model;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
+using static MUSYNCSaveDecode.Model.StaticResource;
 
 namespace MUSYNCSaveDecode.View;
 
@@ -19,14 +21,22 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        gameRunningThread = new Thread(CheckGameRunning) { Name = "CheckGameRunningThread" };
         InitializeComponent();
         Initialize();
-        gameRunningThread = new Thread(CheckGameRunning) { Name = "CheckGameRunningThread" };
         DataContext = vm;
     }
 
     private void Initialize()
     {
+        // 设置窗口位置
+        Left = (SystemParameters.WorkArea.Width - Width) / 2;
+        Top = (SystemParameters.WorkArea.Height - Height) / 2;
+        // 设置窗口样式
+        //WindowStyle = WindowStyle.SingleBorderWindow;
+        //ResizeMode = ResizeMode.CanResizeWithGrip;
+        // 启动检查游戏运行状态的线程
+        gameRunningThread.Start();
     }
 
     protected override void OnClosing(CancelEventArgs e)
@@ -49,34 +59,25 @@ public partial class MainWindow : Window
 
                 // 执行目标函数
                 {
-                    String content;
-                    SolidColorBrush foreground;
-                    SolidColorBrush background;
                     process = Process.GetProcessesByName(StaticResource.ProcessName);
-                    if (process == null)
+                    if (process == null || process.Length == 0)
                     {
-                        content = "游戏未启动";
-                        foreground = new SolidColorBrush(Toolkit.StringToColor("#000000"));
-                        background = new SolidColorBrush(Toolkit.StringToColor("#FF7F7F"));
+                        vm.IsGameRunningLabelPropety.Text = "游戏未启动";
+                        vm.IsGameRunningLabelPropety.ForegroundColor = BlackColor;
+                        vm.IsGameRunningLabelPropety.BackgroundColor = PinkColor;
                     }
                     else if (process.Length == 1)
                     {
-                        content = $"PID:{process[0].Id}";
-                        foreground = new SolidColorBrush(Toolkit.StringToColor("#000000"));
-                        background = new SolidColorBrush(Toolkit.StringToColor("#98E22B"));
+                        vm.IsGameRunningLabelPropety.Text = $"PID:{process[0].Id}";
+                        vm.IsGameRunningLabelPropety.ForegroundColor = BlackColor;
+                        vm.IsGameRunningLabelPropety.BackgroundColor = GreenColor;
                     }
                     else
                     {
-                        content = $"多个游戏实例";
-                        foreground = new SolidColorBrush(Toolkit.StringToColor("#FF0505"));
-                        background = new SolidColorBrush(Toolkit.StringToColor("#FFBF7F"));
+                        vm.IsGameRunningLabelPropety.Text = $"多个游戏实例";
+                        vm.IsGameRunningLabelPropety.ForegroundColor = RedColor;
+                        vm.IsGameRunningLabelPropety.BackgroundColor = OrangeColor;
                     }
-                    Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            IsGameRunningLabel.Content = content;
-                            IsGameRunningLabel.Foreground = foreground;
-                            IsGameRunningLabel.Background = background;
-                        });
                     counter = 50;
                 }
                 // 停止计时
@@ -87,6 +88,7 @@ public partial class MainWindow : Window
             }
             else
                 counter--;
+            Thread.Sleep(100);
         }
         _logger.Warn("Stoped CheckGameRunning Thread", "CheckGameRunning");
     }
@@ -94,11 +96,26 @@ public partial class MainWindow : Window
     private void RefreshBtn_Click(object sender, RoutedEventArgs e)
     {
         //读取存档
+        (new Decode(vm.SavePath)).DecodeSaveFile();
     }
 
     private void OpenFileSelect_Click(object sender, RoutedEventArgs e)
     {
         //打开文件选择器
+        OpenFileDialog openFileDialog = new OpenFileDialog
+        {
+            Filter = "MUSYNX存档文件(*.sav)|*.sav",
+            Title = "选择存档文件",
+            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+        };
+        if (openFileDialog.ShowDialog() == true)
+        {
+            SavePathTBox.Text = vm.SavePath = openFileDialog.FileName;
+        }
+        else
+        {
+            vm.SavePath = StaticResource.SavePath;
+        }
     }
 
     private void IsGameRunningLabel_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

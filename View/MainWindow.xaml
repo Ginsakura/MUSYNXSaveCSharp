@@ -95,10 +95,13 @@
                     Padding="1"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
+                    d:Background="#FF7F7F"
                     d:Content="游戏未启动"
-                    Background="#FF7F7F"
+                    d:Foreground="Black"
+                    Background="{Binding IsGameRunningLabelPropety.BackgroundColor}"
+                    Content="{Binding IsGameRunningLabelPropety.Text}"
                     FontSize="18"
-                    Foreground="Black"
+                    Foreground="{Binding IsGameRunningLabelPropety.ForegroundColor}"
                     MouseLeftButtonUp="IsGameRunningLabel_MouseLeftButtonUp" />
             </Grid>
             <!--  Selector  -->

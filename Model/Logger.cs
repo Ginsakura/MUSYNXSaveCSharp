@@ -121,7 +121,7 @@ public class Logger
     // 写入控制台
     private void WriteToConsole(string message)
     {
-        Console.WriteLine(message);
+        Console.Write(message);
     }
 
     // 写入数据到文件流

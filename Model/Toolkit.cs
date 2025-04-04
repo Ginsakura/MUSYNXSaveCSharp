@@ -104,6 +104,7 @@ public static class Toolkit
 
         // 执行目标函数
         {
+            // 检查压缩日志文件夹是否存在
             if (!Directory.Exists(StaticResource.LogCompressDir))
             {
                 Directory.CreateDirectory(StaticResource.LogCompressDir);
@@ -112,12 +113,24 @@ public static class Toolkit
             Int32 nextIndex = Directory.GetFiles(StaticResource.LogCompressDir).Length;
             String compressLogName = $"log.{nextIndex}.gz";
 
+            // 检查日志文件是否存在
             if (File.Exists(StaticResource.LogFilePath))
             {
-                using FileStream fIn = File.OpenRead(StaticResource.LogFilePath);
-                using GZipStream fOut = new(File.Create(Path.Combine(StaticResource.LogCompressDir, compressLogName)), CompressionMode.Compress);
+                // 压缩日志文件
+                FileStream fIn = File.OpenRead(StaticResource.LogFilePath);
+                GZipStream fOut = new(File.Create(Path.Combine(StaticResource.LogCompressDir, compressLogName)), CompressionMode.Compress);
                 fIn.CopyTo(fOut);
 
+                // 关闭文件流
+                fIn.Close();
+                fIn.Dispose();
+
+                // 关闭压缩流
+                fOut.Flush();
+                fOut.Close();
+                fOut.Dispose();
+
+                // 删除原始日志文件
                 File.Delete(StaticResource.LogFilePath);
             }
         }
@@ -134,7 +147,7 @@ public static class Toolkit
     /// </summary>
     /// <param name="colorString">RGB 或 ARGB 字符串，格式为 "#RRGGBB" 或 "#AARRGGBB"。</param>
     /// <returns>System.Windows.Media.Color</returns>
-    public static Color StringToColor(String colorString)
+    public static Color StringToColor(String colorString, ColorFormat format = ColorFormat.RGB)
     {
         // 确保字符串以 "#" 开头
         if (!colorString.StartsWith("#"))
@@ -151,7 +164,14 @@ public static class Toolkit
             byte r = byte.Parse(colorString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
             byte g = byte.Parse(colorString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             byte b = byte.Parse(colorString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-            return Color.FromRgb(r, g, b); // 使用默认的 Alpha 值 255[^7^]
+            return Color.FromRgb(r, g, b); // 使用默认的 Alpha 值 255
+        }
+        else if (colorString.Length == 3)
+        {
+            byte r = byte.Parse(colorString.Substring(0, 1) + colorString.Substring(0, 1), System.Globalization.NumberStyles.HexNumber);
+            byte g = byte.Parse(colorString.Substring(1, 1) + colorString.Substring(1, 1), System.Globalization.NumberStyles.HexNumber);
+            byte b = byte.Parse(colorString.Substring(2, 1) + colorString.Substring(2, 1), System.Globalization.NumberStyles.HexNumber);
+            return Color.FromRgb(r, g, b); // 使用默认的 Alpha 值 255
         }
         else if (colorString.Length == 8) // ARGB 格式
         {
@@ -159,11 +179,19 @@ public static class Toolkit
             byte r = byte.Parse(colorString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             byte g = byte.Parse(colorString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
             byte b = byte.Parse(colorString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
-            return Color.FromArgb(a, r, g, b); // 使用指定的 Alpha 值[^6^]
+            return Color.FromArgb(a, r, g, b); // 使用指定的 Alpha 值
+        }
+        else if (colorString.Length == 4)
+        {
+            byte a = byte.Parse(colorString.Substring(0, 1) + colorString.Substring(0, 1), System.Globalization.NumberStyles.HexNumber);
+            byte r = byte.Parse(colorString.Substring(1, 1) + colorString.Substring(1, 1), System.Globalization.NumberStyles.HexNumber);
+            byte g = byte.Parse(colorString.Substring(2, 1) + colorString.Substring(2, 1), System.Globalization.NumberStyles.HexNumber);
+            byte b = byte.Parse(colorString.Substring(3, 1) + colorString.Substring(3, 1), System.Globalization.NumberStyles.HexNumber);
+            return Color.FromArgb(a, r, g, b); // 使用指定的 Alpha 值
         }
         else
         {
-            throw new ArgumentException("Invalid color string length. Must be 6 or 8 characters.");
+            throw new ArgumentException("Invalid color string length. Must be 3, 4, 6 or 8 characters.");
         }
     }
 }

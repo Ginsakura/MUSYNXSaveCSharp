@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using Microsoft.VisualBasic.FileIO;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace MUSYNCSaveDecode;
 
@@ -157,6 +158,7 @@ public class Decode
             userMemory.isOpenVSync = GetNonPublicBoolField("isOpenVSync");
             userMemory.hadSaveFpsAndVSync = GetNonPublicBoolField("hadSaveFpsAndVSync");
             userMemory.fps = GetNonPublicIntField("fps");
+            _logger.Debug(JsonSerializer.Serialize(userMemory), "DecodeSaveFile");
         }
 
         // 停止计时

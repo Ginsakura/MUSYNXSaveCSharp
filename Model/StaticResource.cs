@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
+using System.Windows.Media;
 
 namespace MUSYNCSaveDecode.Model;
 
@@ -15,13 +16,13 @@ public static class StaticResource
 
     public static void IncrementLogCount()
     {
-        lock (_Lock) { _LogCount++; };
+        lock (_Lock) { _LogCount++; }
     }
 
     /// <summary>
     /// 游戏文件名
     /// </summary>
-    public const String ProcessName = "MUSYNX.exe";
+    public const String ProcessName = "MUSYNX";
 
     /// <summary>
     /// 默认存档路径提示
@@ -87,10 +88,16 @@ public static class StaticResource
     /// <summary>
     /// Log File Path
     /// </summary>
-    public static readonly String LogFilePath = Path.Combine(DataDir, "log.txt");
+    public static readonly String LogFilePath = Path.Combine(Directory.GetCurrentDirectory(), "log.txt");
 
     /// <summary>
     /// Compress Log Files Dir
     /// </summary>
     public static readonly String LogCompressDir = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+
+    public static readonly SolidColorBrush BlackColor = new SolidColorBrush(Toolkit.StringToColor("#000000"));
+    public static readonly SolidColorBrush PinkColor = new SolidColorBrush(Toolkit.StringToColor("#FF7F7F"));
+    public static readonly SolidColorBrush GreenColor = new SolidColorBrush(Toolkit.StringToColor("#98E22B"));
+    public static readonly SolidColorBrush RedColor = new SolidColorBrush(Toolkit.StringToColor("#FF0505"));
+    public static readonly SolidColorBrush OrangeColor = new SolidColorBrush(Toolkit.StringToColor("#FFBF7F"));
 }
