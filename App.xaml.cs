@@ -22,7 +22,6 @@ public partial class App : Application
         _logger.Debug(">>>>  Software Exiting  <<<<", "OnExit");
         base.OnExit(e);
         _logger.Close();
-        Toolkit.CompressLogFile();
         // 这里可以放置清理代码
         Environment.Exit(0);
     }

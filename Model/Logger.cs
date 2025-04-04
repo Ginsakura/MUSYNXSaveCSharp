@@ -22,6 +22,8 @@ public class Logger
     // 私有构造函数，防止外部直接实例化
     private Logger()
     {
+        // 压缩日志文件
+        Toolkit.CompressLogFile();
         // 设置日志文件路径，可以根据需要修改
         _logFilePath = LogFilePath;
         // 打开文件流，设置为追加模式

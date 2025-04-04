@@ -9,35 +9,21 @@ namespace MUSYNCSaveDecode.Model;
 
 public static class Toolkit
 {
-    private static readonly Logger _logger = Logger.Instance;
-
     /// <summary>
     /// 获取系统DPI
     /// </summary>
     /// <returns>double[]: [dpiX, dpiY]</returns>
     public static double[] GetSystemDPI()
     {
-        // 创建并启动Stopwatch实例
-        Stopwatch stopwatch = Stopwatch.StartNew();
-
-        // 执行目标函数
+        Visual window = Application.Current.MainWindow;
+        PresentationSource source = PresentationSource.FromVisual(window);
+        if (source != null)
         {
-            Visual window = Application.Current.MainWindow;
-            PresentationSource source = PresentationSource.FromVisual(window);
-            if (source != null)
-            {
-                double dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
-                double dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
-                Console.WriteLine($"Window DPI: X = {dpiX}, Y = {dpiY}");
-                return [dpiX, dpiY];
-            }
+            double dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
+            double dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
+            Console.WriteLine($"Window DPI: X = {dpiX}, Y = {dpiY}");
+            return [dpiX, dpiY];
         }
-
-        // 停止计时
-        stopwatch.Stop();
-        // 获取经过的时间，以纳秒为单位
-        TimeSpan elapsed = (TimeSpan)stopwatch.Elapsed;
-        _logger.Debug($"Function Running... [{elapsed.TotalMilliseconds:F3}ms]", "GetSystemDPI");
         return [0.0, 0.0];
     }
 
@@ -46,52 +32,40 @@ public static class Toolkit
     /// </summary>
     public static void ChangeConsoleStyle()
     {
-        // 创建并启动Stopwatch实例
-        Stopwatch stopwatch = Stopwatch.StartNew();
+        // 修改控制台样式
+        Console.WriteLine("Changing Console Style...");
 
-        // 执行目标函数
+        // 假设 Config 是一个自定义类，用于存储配置信息
+        Config config = Config.Instance;
+        if (config.MainExecPath == string.Empty) return;
+        string execPath = config.MainExecPath.Replace('/', '_') + "musynx.exe";
+        Console.WriteLine($"execPath: {execPath}");
+
+        // 打开 HKEY_CURRENT_USER\Console 注册表项
+        RegistryKey? consoleKey = Registry.CurrentUser.OpenSubKey("Console", writable: true);
+        consoleKey ??= Registry.CurrentUser.CreateSubKey("Console");
+
+        // 创建子项
+        using RegistryKey execKey = consoleKey.CreateSubKey(execPath);
+        if (execKey != null)
         {
-            // 修改控制台样式
-            Console.WriteLine("Changing Console Style...");
+            // 设置 CodePage
+            execKey.SetValue("CodePage", 65001, RegistryValueKind.DWord);
 
-            // 假设 Config 是一个自定义类，用于存储配置信息
-            Config config = Config.Instance;
-            if (config.MainExecPath == string.Empty) return;
-            string execPath = config.MainExecPath.Replace('/', '_') + "musynx.exe";
-            Console.WriteLine($"execPath: {execPath}");
+            // 设置 WindowSize
+            execKey.SetValue("WindowSize", 262174, RegistryValueKind.DWord);
 
-            // 打开 HKEY_CURRENT_USER\Console 注册表项
-            RegistryKey? consoleKey = Registry.CurrentUser.OpenSubKey("Console", writable: true);
-            consoleKey ??= Registry.CurrentUser.CreateSubKey("Console");
+            // 设置 WindowAlpha
+            int alphaValue = (int)(config.ConsoleAlpha * 255 / 100);
+            execKey.SetValue("WindowAlpha", alphaValue, RegistryValueKind.DWord);
 
-            // 创建子项
-            using RegistryKey execKey = consoleKey.CreateSubKey(execPath);
-            if (execKey != null)
-            {
-                // 设置 CodePage
-                execKey.SetValue("CodePage", 65001, RegistryValueKind.DWord);
+            // 设置字体名称
+            execKey.SetValue("FaceName", "霞鹜文楷等宽", RegistryValueKind.String);
 
-                // 设置 WindowSize
-                execKey.SetValue("WindowSize", 262174, RegistryValueKind.DWord);
-
-                // 设置 WindowAlpha
-                int alphaValue = (int)(config.ConsoleAlpha * 255 / 100);
-                execKey.SetValue("WindowAlpha", alphaValue, RegistryValueKind.DWord);
-
-                // 设置字体名称
-                execKey.SetValue("FaceName", "霞鹜文楷等宽", RegistryValueKind.String);
-
-                // 设置字体大小
-                int fontSizeValue = config.ConsoleFontSize << 16;
-                execKey.SetValue("FontSize", fontSizeValue, RegistryValueKind.DWord);
-            }
+            // 设置字体大小
+            int fontSizeValue = config.ConsoleFontSize << 16;
+            execKey.SetValue("FontSize", fontSizeValue, RegistryValueKind.DWord);
         }
-
-        // 停止计时
-        stopwatch.Stop();
-        // 获取经过的时间，以纳秒为单位
-        TimeSpan elapsed = (TimeSpan)stopwatch.Elapsed;
-        _logger.Debug($"Function Running... [{elapsed.TotalMilliseconds:F3}ms]", "ChangeConsoleStyle");
     }
 
     /// <summary>
@@ -139,7 +113,7 @@ public static class Toolkit
         stopwatch.Stop();
         // 获取经过的时间，以纳秒为单位
         TimeSpan elapsed = (TimeSpan)stopwatch.Elapsed;
-        _logger.Debug($"Function Running... [{elapsed.TotalMilliseconds:F3}ms]", "CompressLogFile");
+        System.Console.WriteLine($"Function Running... [{elapsed.TotalMilliseconds:F3}ms]", "CompressLogFile");
     }
 
     /// <summary>
